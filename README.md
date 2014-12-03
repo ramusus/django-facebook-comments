@@ -6,7 +6,7 @@ Application for interacting with Facebook Graph API Comments objects using Djang
 
 ## Installation
 
-    pip install -e git+git@github.com:ramusus/django-facebook-comments.git#egg=django_facebook_comments
+    pip install -e git+https://github.com/ramusus/django-facebook-comments.git#egg=django_facebook_comments
 
 Add into `settings.py` lines:
 
