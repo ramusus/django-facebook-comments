@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
 from django.db import models
-
-
+from south.db import db
+from south.utils import datetime_utils as datetime
+from south.v2 import SchemaMigration
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'Comment'
         db.create_table(u'facebook_comments_comment', (
             ('graph_id', self.gf('django.db.models.fields.CharField')(unique=True, max_length=200, primary_key=True)),
-            ('owner_content_type', self.gf('django.db.models.fields.related.ForeignKey')(related_name='content_type_owners_comments', null=True, to=orm['contenttypes.ContentType'])),
+            ('owner_content_type', self.gf('django.db.models.fields.related.ForeignKey')
+             (related_name='content_type_owners_comments', null=True, to=orm['contenttypes.ContentType'])),
             ('owner_id', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, db_index=True)),
             ('author_json', self.gf('annoying.fields.JSONField')(null=True)),
-            ('author_content_type', self.gf('django.db.models.fields.related.ForeignKey')(related_name='content_type_authors_comments', null=True, to=orm['contenttypes.ContentType'])),
+            ('author_content_type', self.gf('django.db.models.fields.related.ForeignKey')
+             (related_name='content_type_authors_comments', null=True, to=orm['contenttypes.ContentType'])),
             ('author_id', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, db_index=True)),
             ('likes_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('message', self.gf('django.db.models.fields.TextField')()),
@@ -31,8 +31,14 @@ class Migration(SchemaMigration):
             ('comment', models.ForeignKey(orm[u'facebook_comments.comment'], null=False)),
             ('user', models.ForeignKey(orm[u'facebook_users.user'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['comment_id', 'user_id'])
 
+        db.add_column('facebook_comments_comment_likes_users', 'time_from',
+                      self.gf('django.db.models.fields.DateTimeField')(null=True, db_index=True),
+                      keep_default=False)
+
+        db.add_column('facebook_comments_comment_likes_users', 'time_to',
+                      self.gf('django.db.models.fields.DateTimeField')(null=True, db_index=True),
+                      keep_default=False)
 
     def backwards(self, orm):
         # Deleting model 'Comment'
@@ -40,7 +46,6 @@ class Migration(SchemaMigration):
 
         # Removing M2M table for field likes_users on 'Comment'
         db.delete_table(db.shorten_name(u'facebook_comments_comment_likes_users'))
-
 
     models = {
         u'contenttypes.contenttype': {
