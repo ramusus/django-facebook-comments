@@ -14,7 +14,7 @@ class CommentFactory(factory.DjangoModelFactory):
 
     owner = factory.SubFactory(PostFactory)
     author = factory.SubFactory(UserFactory)
-    graph_id = factory.LazyAttributeSequence(lambda o, n: '%s_%s' % (o.post.graph_id, n))
+    graph_id = factory.LazyAttributeSequence(lambda o, n: '%s_%s' % (o.owner.graph_id, n))
 
     class Meta:
         model = models.Comment

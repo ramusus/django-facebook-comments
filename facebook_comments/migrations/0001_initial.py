@@ -8,7 +8,8 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding model 'Comment'
         db.create_table(u'facebook_comments_comment', (
-            ('graph_id', self.gf('django.db.models.fields.CharField')(unique=True, max_length=200, primary_key=True)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('graph_id', self.gf('django.db.models.fields.CharField')(unique=True, max_length=70)),
             ('owner_content_type', self.gf('django.db.models.fields.related.ForeignKey')
              (related_name='content_type_owners_comments', null=True, to=orm['contenttypes.ContentType'])),
             ('owner_id', self.gf('django.db.models.fields.PositiveIntegerField')(null=True, db_index=True)),
@@ -31,7 +32,6 @@ class Migration(SchemaMigration):
             ('comment', models.ForeignKey(orm[u'facebook_comments.comment'], null=False)),
             ('user', models.ForeignKey(orm[u'facebook_users.user'], null=False))
         ))
-
         db.add_column('facebook_comments_comment_likes_users', 'time_from',
                       self.gf('django.db.models.fields.DateTimeField')(null=True, db_index=True),
                       keep_default=False)
@@ -62,7 +62,8 @@ class Migration(SchemaMigration):
             'author_json': ('annoying.fields.JSONField', [], {'null': 'True'}),
             'can_remove': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'created_time': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'}),
-            'graph_id': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '200', 'primary_key': 'True'}),
+            'graph_id': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '70'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'likes_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'likes_users': ('m2m_history.fields.ManyToManyHistoryField', [], {'related_name': "'like_comments'", 'symmetrical': 'False', 'to': u"orm['facebook_users.User']"}),
             'message': ('django.db.models.fields.TextField', [], {}),
@@ -83,7 +84,7 @@ class Migration(SchemaMigration):
             'favorite_teams': ('annoying.fields.JSONField', [], {'max_length': '500', 'null': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             'gender': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'graph_id': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
+            'graph_id': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '70'}),
             'hometown': ('annoying.fields.JSONField', [], {'max_length': '500', 'null': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'installed': ('annoying.fields.JSONField', [], {'max_length': '500', 'null': 'True'}),

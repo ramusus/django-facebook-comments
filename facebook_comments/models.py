@@ -4,12 +4,12 @@ import re
 
 from django.db import models
 from facebook_api.mixins import OwnerableModelMixin, AuthorableModelMixin, LikableModelMixin, ShareableModelMixin
-from facebook_api.models import FacebookGraphStrPKModel, FacebookGraphManager
+from facebook_api.models import FacebookGraphIDModel, FacebookGraphManager
 
 log = logging.getLogger('facebook_comments')
 
 
-class Comment(OwnerableModelMixin, AuthorableModelMixin, LikableModelMixin, FacebookGraphStrPKModel):
+class Comment(OwnerableModelMixin, AuthorableModelMixin, LikableModelMixin, FacebookGraphIDModel):
 
     message = models.TextField(help_text='The message')
     created_time = models.DateTimeField(help_text='The time the comment was initially published', db_index=True)
