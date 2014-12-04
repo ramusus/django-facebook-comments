@@ -13,7 +13,7 @@ log = logging.getLogger('facebook_comments')
 
 class CommentableModelMixin(models.Model):
 
-    comments_count = models.IntegerField(null=True, help_text='The number of comments of this item')
+    comments_count = models.PositiveIntegerField(null=True, help_text='The number of comments of this item')
 
     class Meta:
         abstract = True
