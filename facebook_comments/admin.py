@@ -7,7 +7,7 @@ from .models import Comment
 
 class CommentInline(admin.TabularInline):
     model = Comment
-    fields = ('created_time', 'author', 'message', 'likes_count', 'like_users')
+    fields = ('created_time', 'author', 'message', 'likes_count', 'likes_users')
     readonly_fields = fields
     extra = False
     can_delete = False
@@ -20,7 +20,7 @@ class CommentAdmin(FacebookModelAdmin):
 
     def get_readonly_fields(self, *args, **kwargs):
         fields = super(CommentAdmin, self).get_readonly_fields(*args, **kwargs)
-        return fields + ['like_users']
+        return fields + ['likes_users']
 
 
 admin.site.register(Comment, CommentAdmin)
