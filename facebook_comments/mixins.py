@@ -3,11 +3,10 @@ import logging
 
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from facebook_api.api import api_call
 from facebook_api.decorators import fetch_all, atomic
-from facebook_api.utils import graph
 
 from .models import Comment
-
 log = logging.getLogger('facebook_comments')
 
 
@@ -39,8 +38,8 @@ class CommentableModelMixin(models.Model):
             'owner_id': self.pk
         }
         ids = []
-        response = graph('%s/comments' %
-                         self.graph_id, limit=limit, filter=filter, summary=int(summary), **kwargs)
+        response = api_call('%s/comments' %
+                            self.graph_id, limit=limit, filter=filter, summary=int(summary), **kwargs)
         if response:
             log.debug('response objects count=%s, limit=%s, after=%s' %
                       (len(response.data), limit, kwargs.get('after')))
