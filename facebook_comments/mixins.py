@@ -42,8 +42,8 @@ class CommentableModelMixin(models.Model):
                             self.graph_id, limit=limit, filter=filter, summary=int(summary), **kwargs)
         if response:
             log.debug('response objects count=%s, limit=%s, after=%s' %
-                      (len(response.data), limit, kwargs.get('after')))
-            for resource in response.data:
+                      (len(response['data']), limit, kwargs.get('after')))
+            for resource in response['data']:
                 instance = Comment.remote.get_or_create_from_resource(resource, extra_fields)
                 ids += [instance.pk]
 

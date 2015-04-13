@@ -26,16 +26,21 @@ class Comment(OwnerableModelMixin, AuthorableModelMixin, LikableModelMixin, Face
 
     @property
     def slug(self):
-        return '%s?comment_id=%s' % (self.owner.slug, self.graph_id.split('_')[-1])
+        # TODO: doesn't work with new ids like {PAGE_ID}:{POST_ID}:63_5258666
+        # for example in post 147863265269488_588392457883231/comments
+        comment_id = self.graph_id.split('_')[-1] if self.graph_id.count(':') != 2 else ''
+        return '%s?comment_id=%s' % (self.owner.slug, comment_id)
 
     def parse(self, response):
 
-        # transform graph_id from -> {PAGE_ID}_{POST_ID}_{COMMENT_ID}
-        if response['id'].count('_') == 0:
-            # group posts comments {COMMENT_ID} -> {PAGE_ID}_{POST_ID}_{COMMENT_ID}
-            response['id'] = '_'.join([self.owner.graph_id, response['id']])
-        elif response['id'].count('_') == 1:
-            # page posts comments {POST_ID}_{COMMENT_ID} -> {PAGE_ID}_{POST_ID}_{COMMENT_ID}
-            response['id'] = re.sub(r'^\d+', str(self.owner.graph_id), response['id'])
+        # don't touch graph_id like {PAGE_ID}:{POST_ID}:63_5258666
+        if response['id'].count(':') != 2:
+            # transform graph_id -> {PAGE_ID}_{POST_ID}_{COMMENT_ID}
+            if response['id'].count('_') == 0:
+                # group posts comments {COMMENT_ID} -> {PAGE_ID}_{POST_ID}_{COMMENT_ID}
+                response['id'] = '_'.join([self.owner.graph_id, response['id']])
+            elif response['id'].count('_') == 1:
+                # page posts comments {POST_ID}_{COMMENT_ID} -> {PAGE_ID}_{POST_ID}_{COMMENT_ID}
+                response['id'] = re.sub(r'^\d+', str(self.owner.graph_id), response['id'])
 
         super(Comment, self).parse(response)
