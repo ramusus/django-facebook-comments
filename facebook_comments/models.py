@@ -3,7 +3,7 @@ import logging
 import re
 
 from django.db import models
-from facebook_api.mixins import OwnerableModelMixin, AuthorableModelMixin, LikableModelMixin, ShareableModelMixin
+from facebook_api.mixins import OwnerableModelMixin, AuthorableModelMixin, LikableModelMixin
 from facebook_api.models import FacebookGraphIDModel, FacebookGraphManager
 
 log = logging.getLogger('facebook_comments')
